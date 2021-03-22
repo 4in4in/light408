@@ -1,0 +1,14 @@
+{
+    "1": { "warm_pin": 1, "cold_pin": 0, "board_id": 0 },
+    "2": { "warm_pin": 2, "cold_pin": 3, "board_id": 0 },
+    "3": { "warm_pin": 4, "cold_pin": 5, "board_id": 0 },
+    "4": { "warm_pin": 6, "cold_pin": 7, "board_id": 0 },
+    "5": { "warm_pin": 9, "cold_pin": 8, "board_id": 0 },
+    "6": { "warm_pin": 10, "cold_pin": 11, "board_id": 0 },
+    "7": { "warm_pin": 12, "cold_pin": 13, "board_id": 0 },
+    "8": { "warm_pin": 14, "cold_pin": 15, "board_id": 0 },
+    "9": { "warm_pin": 0, "cold_pin": 1, "board_id": 1 },
+    "10": { "warm_pin": 2, "cold_pin": 3, "board_id": 1 },
+    "11": { "warm_pin": 5, "cold_pin": 4, "board_id": 1 },
+    "12": { "warm_pin": 6, "cold_pin": 7, "board_id": 1 }
+}

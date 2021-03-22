@@ -1,0 +1,4 @@
+{
+    "relax": { "name_ru": "Расслабление", "cold": "3500", "warm": "1500", "pwm_freq": "1000" },
+    "default": { "name_ru": "По умолчанию", "cold": "0", "warm": "0", "pwm_freq": "1000" }
+}

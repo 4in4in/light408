@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Управление светильниками</title>
+    </head>
+    <body>
+        <h1>Интерфейс управления светильниками</h1>
+        
+        Режим для всех:
+        <form action="/" method="POST">
+            <select name="mode" method="GET" action="/">
+                {% for mode_key in modes_keys %}
+                    <option value="{{ mode_key }}" SELECTED>{{modes[mode_key].name_ru}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="OK">
+        </form>
+    </body>
+</html>
