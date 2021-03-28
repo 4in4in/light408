@@ -6,13 +6,26 @@
         <h1>Интерфейс управления светильниками</h1>
         
         Режим для всех:
-        <form action="/" method="POST">
+        <form action="/set_mode" method="POST">
             <select name="mode" method="GET" action="/">
                 {% for mode_key in modes_keys %}
-                    <option value="{{ mode_key }}" SELECTED>{{modes[mode_key].name_ru}}</option>
+                    {% if mode_key == selected_mode %}
+                        <option value="{{ mode_key }}" selected>{{modes[mode_key].name_ru}}</option>
+                    {% else %}
+                    <option value="{{ mode_key }}">{{modes[mode_key].name_ru}}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
             <input type="submit" value="OK">
         </form>
+
+        <form action="/smooth_off" method="POST">
+            <input type="submit" value="плавное выключение">
+        </form>
+
+        <form action="/demo" method="POST">
+            <input type="submit" value="демонстрация">
+        </form>
+
     </body>
 </html>
