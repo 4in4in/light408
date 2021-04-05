@@ -51,6 +51,8 @@ def set_mode_bot():
     args = request.json
     target_mode = args['mode']
 
+    # Лампы #
+
     if target_mode == 'smooth_off_all':
         th = Thread(target=lamp_controller.smooth_off_all)
         th.start()
@@ -102,7 +104,7 @@ def set_mode_bot():
     print(args['mode'])
     return args['mode']
 
-@app.route('/set_jalyuzi', methods=["GET"])
+@app.route('/set_jelaousy', methods=["GET"])
 def set_jalyuzi():
     args = request.json
     target_mode = args['mode']
@@ -122,5 +124,5 @@ def set_jalyuzi():
         return 'error'
     return str(jal_id) + ' ' + target_mode
 
-if __name__=="__main__":
+if __name__ == "__main__":
     app.run(port=5000, host='0.0.0.0')
