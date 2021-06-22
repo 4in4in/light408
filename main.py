@@ -11,12 +11,6 @@ app = Flask(__name__, template_folder='app/templates')
 lamp_controller = ctrl.LampController()
 jal_controller = jalyuzi.JalController()
 
-target_modes = {
-    'smooth_off_all': lamp_controller.smooth_off_all,
-    'gradient_projector': lamp_controller.gradient_projector,
-    'gradient_demo': lamp_controller.gradient_demo,
-}
-
 @app.route('/set_mode_bot', methods=['GET'])
 def set_mode_bot():
     args = request.json
