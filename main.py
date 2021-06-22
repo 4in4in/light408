@@ -51,6 +51,8 @@ def set_mode_bot():
     args = request.json
     target_mode = args['mode']
 
+    # Лампы #
+
     if target_mode == 'smooth_off_all':
         th = Thread(target=lamp_controller.smooth_off_all)
         th.start()
@@ -77,32 +79,32 @@ def set_mode_bot():
         # lamp_controller.smooth_on_all('default')
 
     # Жалюзи #
-    elif target_mode=='jal1_up':
+    elif target_mode == 'jal1_up':
         jal_controller.move(1, 'up')
-    elif target_mode=='jal1_down':
+    elif target_mode == 'jal1_down':
         jal_controller.move(1, 'down')
-    elif target_mode=='jal1_stop':
+    elif target_mode == 'jal1_stop':
         jal_controller.stop(1)
-    elif target_mode=='jal1_open_up':
+    elif target_mode == 'jal1_open_up':
         jal_controller.turn_up(1, 'up')
-    elif target_mode=='jal1_open_down':
+    elif target_mode == 'jal1_open_down':
         jal_controller.turn_up(1, 'down')
-    elif target_mode=='jal2_up':
+    elif target_mode == 'jal2_up':
         jal_controller.move(2, 'up')
-    elif target_mode=='jal2_down':
+    elif target_mode == 'jal2_down':
         jal_controller.move(2, 'down')
-    elif target_mode=='jal2_stop':
+    elif target_mode == 'jal2_stop':
         jal_controller.stop(2)
-    elif target_mode=='jal2_open_up':
+    elif target_mode == 'jal2_open_up':
         jal_controller.turn_up(2, 'up')
-    elif target_mode=='jal2_open_down':
+    elif target_mode == 'jal2_open_down':
         jal_controller.turn_up(2, 'down')
     else:
         lamp_controller.set_lamp_mode_all(args['mode'])
     print(args['mode'])
     return args['mode']
 
-@app.route('/set_jalyuzi', methods=["GET"])
+@app.route('/set_jelaousy', methods=["GET"])
 def set_jalyuzi():
     args = request.json
     target_mode = args['mode']
@@ -122,5 +124,9 @@ def set_jalyuzi():
         return 'error'
     return str(jal_id) + ' ' + target_mode
 
-if __name__=="__main__":
-    app.run(port=5000, host='0.0.0.0')
+if __name__ == "__main__":
+    try:
+        app.run(port=5000, host='0.0.0.0')
+    finally:
+        # lamp_controller.set_lamp_mode_all('default')
+        jal_controller.leave()

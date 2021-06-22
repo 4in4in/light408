@@ -16,14 +16,9 @@ class LampController:
     stop_thread = False
     lock = Lock()
 
-    def lock_and_stop(self):
+    def set_thread_state(self, state):
         self.lock.acquire()
-        self.stop_thread = True
-        self.lock.release()
-    
-    def lock_and_start(self):
-        self.lock.acquire()
-        self.stop_thread = False
+        self.stop_thread = state
         self.lock.release()
 
     pwms = {
@@ -46,15 +41,13 @@ class LampController:
             return modes # загрузка режимов, в которых могут работать светильники
 
     def set_lamp_mode(self, lamp_id, mode):
-        # self.lock_and_stop()
         self.lamps_dict[lamp_id].set_mode(mode, self.modes_list[mode]) # задать режим работы для светильника с номером lamp_id
 
     def set_lamp_mode_all(self, mode):
-        self.lock_and_stop()
+        self.set_thread_state(True)
         time.sleep(0.3)
         for lamp_id in self.lamps_dict.keys():
             self.set_lamp_mode(lamp_id, mode) # задать режим работы для всех светильников
-        # self.current_mode = ''
 
     def smooth_off_one(self, lamp_id): # плавное выключение
         curr_lamp_id = lamp_id
@@ -110,9 +103,9 @@ class LampController:
     #####
 
     def smooth_off_all(self):
-        self.lock_and_stop()
+        self.set_thread_state(True)
         time.sleep(0.5)
-        self.lock_and_start()
+        self.set_thread_state(False)
         MAX = 4000
         STEP = 225 # было 50
 
@@ -142,10 +135,10 @@ class LampController:
         
 
     def smooth_on_all_fast(self, target_mode):
-        self.lock_and_stop()
+        self.set_thread_state(True)
         self.set_lamp_mode_all('off')
         time.sleep(0.5)
-        self.lock_and_start()
+        self.set_thread_state(False)
         STEP = 225 # было 50
 
         target_cold = int(self.modes_list[target_mode]['cold'])
@@ -180,10 +173,10 @@ class LampController:
         self.set_lamp_mode_all(target_mode)
 
     def smooth_on_all(self, target_mode):
-        self.lock_and_stop()
+        self.set_thread_state(True)
         self.set_lamp_mode_all('off')
         time.sleep(0.5)
-        self.lock_and_start()
+        self.set_thread_state(False)
 
         target_cold = int(self.modes_list[target_mode]['cold'])
         target_warm = int(self.modes_list[target_mode]['warm'])
@@ -212,10 +205,10 @@ class LampController:
         self.set_lamp_mode_all(target_mode)
 
     def demo(self): # бегающая лампа
-        self.lock_and_stop()
+        self.set_thread_state(True)
         self.set_lamp_mode_all('off')
         time.sleep(0.5)
-        self.lock_and_start()
+        self.set_thread_state(False)
         lamps_order = [1, 3, 5, 7, 9, 11, 12, 10, 8, 6, 4, 2]
         while True: #not self.__stop_mode:
             print('snake!')
@@ -237,9 +230,9 @@ class LampController:
                 time.sleep(0.25)
 
     def gradient_demo(self):
-        self.lock_and_stop()
+        self.set_thread_state(True)
         time.sleep(0.5)
-        self.lock_and_start()
+        self.set_thread_state(False)
         curr_cold = 0
         curr_warm = 3500
         total_lamps = len(self.lamps_dict.keys())
@@ -257,9 +250,9 @@ class LampController:
             curr_warm -= 3500/5
 
     def gradient_projector(self):
-        self.lock_and_stop()
+        self.set_thread_state(True)
         time.sleep(0.5)
-        self.lock_and_start()
+        self.set_thread_state(False)
         curr_cold = 4095
         curr_warm = 4095
         total_lamps = len(self.lamps_dict.keys())
@@ -278,10 +271,10 @@ class LampController:
             curr_warm -= 3600/5
 
     def pairs_on(self, target_mode):
-        self.lock_and_stop()
+        self.set_thread_state(True)
         self.set_lamp_mode_all('off')
         time.sleep(0.5)
-        self.lock_and_start()
+        self.set_thread_state(False)
         STEP = 10
         for i in range(0, len(self.lamps_dict.keys()), 2):
             curr_cold = 4095
