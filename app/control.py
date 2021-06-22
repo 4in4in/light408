@@ -1,15 +1,15 @@
 # В этом файле осуществляется управление светильниками
 
 
-# from app.classes import DUMMY_PCA9685 as Adafruit_PCA9685
+from classes import DUMMY_PCA9685 as Adafruit_PCA9685
 
 from threading import Thread, Lock
 
-import Adafruit_PCA9685
+# import Adafruit_PCA9685
 import time
 
 import json
-from app.classes.lamp import Lamp # В классе Lamp содержатся основные атрибуты светильника
+from classes.lamp import Lamp # В классе Lamp содержатся основные атрибуты светильника
 
 class LampController:
 
@@ -48,6 +48,44 @@ class LampController:
         time.sleep(0.3)
         for lamp_id in self.lamps_dict.keys():
             self.set_lamp_mode(lamp_id, mode) # задать режим работы для всех светильников
+    
+    def set_lamp_user_mode(self, lamp_id, cold, warm, pwm_freq):
+        self.lamps_dict[lamp_id].set_user_mode(cold, warm, pwm_freq)
+
+    def set_lamp_user_mode_all(self, cold, warm, pwm_freq):
+        self.set_thread_state(True)
+        time.sleep(0.3)
+        for lamp_id in self.lamps_dict.keys():
+            self.set_lamp_user_mode(lamp_id, cold, warm, pwm_freq) 
+
+    def set_lamp_mode_all_smooth(self, mode):
+        self.set_thread_state(True)
+        time.sleep(0.3)
+
+        current_cold = self.lamps_dict[1].current_cold
+        current_warm = self.lamps_dict[1].current_warm
+        new_cold = self.modes_list[mode]['cold']
+        new_warm = self.modes_list[mode]['warm']
+        new_pwm = self.modes_list[mode]['pwm_freq']
+        steps = 40
+        step_cold = (int(new_cold) - int(current_cold))/steps
+        step_warm = (int(new_warm) - int(current_warm))/steps
+
+        for i in range(steps):
+            self.lock.acquire()
+            if self.stop_thread is True:
+                self.lock.release()
+                break
+            self.lock.release()
+            current_cold += step_cold
+            current_warm += step_warm
+            self.set_lamp_user_mode_all(current_cold, current_warm, new_pwm)
+            time.sleep(0.05)
+            print(current_cold, current_warm)
+
+        self.set_lamp_mode_all(mode)
+                
+
 
     def smooth_off_one(self, lamp_id): # плавное выключение
         curr_lamp_id = lamp_id
@@ -57,7 +95,6 @@ class LampController:
 
         curr_cold = self.lamps_dict[curr_lamp_id].current_cold
         curr_warm = self.lamps_dict[curr_lamp_id].current_warm
-        curr_pwm_freq = self.lamps_dict[curr_lamp_id].current_pwm_freq
 
         while curr_cold < MAX or curr_warm < MAX:
             if curr_cold<MAX:
@@ -70,7 +107,6 @@ class LampController:
                 curr_warm = 4095
 
             self.lamps_dict[curr_lamp_id].set_user_mode(curr_cold, curr_warm, 300)
-            # print('lamp_id', lamp_id,  'curr_cold ', curr_cold, 'curr_warm: ', curr_warm)
             time.sleep(0.2)
         
         self.set_lamp_mode(1, 'off')
@@ -150,14 +186,12 @@ class LampController:
             curr_warm = self.lamps_dict[lamp_id1].current_warm
             curr_pwm_freq = self.lamps_dict[1].current_pwm_freq
 
-       
             while (curr_cold > target_cold or curr_warm > target_warm): 
                 
                 self.lock.acquire()
                 if self.stop_thread is True:
                     self.lock.release()
                     break
-                    self.lock.release()
 
                 if curr_cold>target_cold:
                     curr_cold -= int(STEP)
@@ -235,8 +269,7 @@ class LampController:
         self.set_thread_state(False)
         curr_cold = 0
         curr_warm = 3500
-        total_lamps = len(self.lamps_dict.keys())
-        for i in range(0, len(self.lamps_dict.keys()), 2):
+        for i in range(0, len(self.lamps_dict), 2):
             self.lock.acquire()
             if self.stop_thread is True:
                 self.lock.release()
@@ -315,5 +348,6 @@ class LampController:
 
         return lamps_dict # создание словаря, состоящего из экземпляров класса Lamp
 
-    # modes_list = load_lamp_modes() # загрузка списка режимов работы светильников
-    # lamps_dict = create_lamps_dict() # создание словаря, состоящего из экземпляров класса Lamp
+
+if __name__ == '__main__':
+    lamp_controller = LampController()
