@@ -6,9 +6,9 @@ class JalController:
     jal_list = { 1: (22, 27, 17), 2: (6, 13, 19) }
 
     def __init__(self):
-        self.init()
+        self.setup()
 
-    def init(self):
+    def setup(self):
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
 
@@ -38,8 +38,10 @@ class JalController:
         self.stop(jal_id)
 
     def leave(self):
-        self.init()
-        GPIO.cleanup()
+        for jal_id in self.jal_list:
+            self.stop(jal_id)
+            os.system("clear")
+            # GPIO.cleanup()
 
 if __name__=="__main__":
     controller = JalController()
@@ -59,5 +61,6 @@ if __name__=="__main__":
             controller.turn_up(jal_id, 'up')
         elif command == 5:
             controller.turn_up(jal_id, 'down')
-        # elif command == 0:
-        #     leave()
+        elif command == 0:
+            controller.leave()
+            break

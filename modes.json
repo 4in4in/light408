@@ -2,7 +2,7 @@
     "extra_relax": { "name_ru": "Полное расслабление", "cold": "3500", "warm": "1500", "pwm_freq": "1000" },
     "default": { "name_ru": "По умолчанию", "cold": "0", "warm": "0", "pwm_freq": "1000" },
     "off": { "name_ru": "Выключить", "cold": "4095", "warm": "4095", "pwm_freq": "1000" },
-    "relax": { "name_ru": "Расслабление", "cold": "2000", "warm": "2200", "pwm_freq": "1000" },
-    "activation": { "name_ru": "Активация", "cold": "100", "warm": "3500", "pwm_freq": "900" },
-    "extra_activation": { "name_ru": "Экстра-активация", "cold": "100", "warm": "2800", "pwm_freq": "300" }
+    "relax": { "name_ru": "Расслабление", "cold": "2700", "warm": "1800", "pwm_freq": "1000" },
+    "activation": { "name_ru": "Активация", "cold": "100", "warm": "3500", "pwm_freq": "300" },
+    "extra_activation": { "name_ru": "Экстра-активация", "cold": "100", "warm": "3200", "pwm_freq": "100" }
 }
