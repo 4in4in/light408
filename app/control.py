@@ -1,11 +1,11 @@
 # В этом файле осуществляется управление светильниками
 
 
-from classes import DUMMY_PCA9685 as Adafruit_PCA9685
+# from classes import DUMMY_PCA9685 as Adafruit_PCA9685
 
-from threading import Thread, Lock
+from threading import Lock
 
-# import Adafruit_PCA9685
+import Adafruit_PCA9685
 import time
 
 import json
