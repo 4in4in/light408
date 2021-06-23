@@ -1,19 +1,41 @@
 # from app import fl_app
 
 from app import control as ctrl
-from app import jalyuzi
+# from app import jalyuzi
 
-from flask import Flask, request
+from flask import Flask, request, render_template
 from threading import Thread
 
-app = Flask(__name__, template_folder='app/templates')
+app = Flask(__name__, template_folder='app/templates', static_folder='app/static')
 
 lamp_controller = ctrl.LampController()
 jal_controller = jalyuzi.JalController()
 
-@app.route('/set_mode_bot', methods=['GET'])
+@app.route('/get_modes')
+def get_modes():
+    return lamp_controller.modes_list
+
+@app.route('/')
+def main():
+    return render_template('test.html')
+
+@app.route('/check_mode', methods=['GET', 'POST'])
+def check_mode():
+    args = request.json
+    lamp_controller.set_lamp_user_mode_all(args['cold'], args['warm'], args['pwm'])
+    print(args)
+    return args
+
+@app.route('/create_mode', methods=['GET', 'POST'])
+def add_mode():
+    args = request.json
+    lamp_controller.add_mode(args['name_ru'], args['cold'], args['warm'], args['pwm'])
+    return args
+
+@app.route('/set_mode_bot', methods=['GET', 'POST'])
 def set_mode_bot():
     args = request.json
+    print(args)
     target_mode = args['mode']
 
     # Лампы #
@@ -60,7 +82,7 @@ def set_mode_bot():
         jal_controller.turn_up(2, 'down')
     else:
         # lamp_controller.set_lamp_mode_all(args['mode'])
-        th = Thread(target=lamp_controller.set_lamp_mode_all_smooth, args=['mode'])
+        th = Thread(target=lamp_controller.set_lamp_mode_all_smooth, args=[target_mode])
         th.start()    
 
     print(args['mode'])
@@ -72,3 +94,4 @@ if __name__ == "__main__":
     finally:
         # lamp_controller.set_lamp_mode_all('default')
         jal_controller.leave()
+        # pass

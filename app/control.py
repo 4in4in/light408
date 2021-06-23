@@ -1,7 +1,7 @@
 # В этом файле осуществляется управление светильниками
 
 
-# from classes import DUMMY_PCA9685 as Adafruit_PCA9685
+# from app.classes import DUMMY_PCA9685 as Adafruit_PCA9685
 
 from threading import Lock
 
@@ -9,7 +9,7 @@ import Adafruit_PCA9685
 import time
 
 import json
-from classes.lamp import Lamp # В классе Lamp содержатся основные атрибуты светильника
+from app.classes.lamp import Lamp # В классе Lamp содержатся основные атрибуты светильника
 
 class LampController:
 
@@ -39,6 +39,14 @@ class LampController:
         with open('modes.json', 'r') as f:
             modes = json.load(f)
             return modes # загрузка режимов, в которых могут работать светильники
+
+    def add_mode(self, name_ru, cold, warm, pwm):
+        from datetime import datetime
+        import os
+        internal_name = str(datetime.now().timestamp())
+        self.modes_list[internal_name] = {'name_ru':name_ru, 'cold': cold, 'warm': warm, 'pwm_freq': pwm}
+        with open('modes.json', 'w') as f:
+            json.dump(self.modes_list, f, indent=4, ensure_ascii=False)
 
     def set_lamp_mode(self, lamp_id, mode):
         self.lamps_dict[lamp_id].set_mode(mode, self.modes_list[mode]) # задать режим работы для светильника с номером lamp_id

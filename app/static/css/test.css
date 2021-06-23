@@ -1,0 +1,13 @@
+* {
+    margin: 5px;
+}
+
+.flex-main-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-container {
+    flex-grow: 1;
+}
+
