@@ -1,7 +1,7 @@
 # from app import fl_app
 
 from app import control as ctrl
-# from app import jalyuzi
+from app import jalyuzi
 
 from flask import Flask, request, render_template
 from threading import Thread
