@@ -61,8 +61,6 @@ class LampController:
         self.lamps_dict[lamp_id].set_user_mode(cold, warm, pwm_freq)
 
     def set_lamp_user_mode_all(self, cold, warm, pwm_freq):
-        self.set_thread_state(True)
-        time.sleep(0.3)
         for lamp_id in self.lamps_dict.keys():
             self.set_lamp_user_mode(lamp_id, cold, warm, pwm_freq) 
 
@@ -88,7 +86,7 @@ class LampController:
             current_cold += step_cold
             current_warm += step_warm
             self.set_lamp_user_mode_all(current_cold, current_warm, new_pwm)
-            time.sleep(0.05)
+            time.sleep(0.1)
             print(current_cold, current_warm)
 
         self.set_lamp_mode_all(mode)
