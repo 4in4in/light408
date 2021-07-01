@@ -1,11 +1,11 @@
 # В этом файле осуществляется управление светильниками
 
 
-# from app.classes import DUMMY_PCA9685 as Adafruit_PCA9685
+from app.classes import DUMMY_PCA9685 as Adafruit_PCA9685
 
 from threading import Lock
 
-import Adafruit_PCA9685
+# import Adafruit_PCA9685
 import time
 
 import json
@@ -86,7 +86,7 @@ class LampController:
             current_cold += step_cold
             current_warm += step_warm
             self.set_lamp_user_mode_all(current_cold, current_warm, new_pwm)
-            time.sleep(0.1)
+            time.sleep(1)
             print(current_cold, current_warm)
 
         self.set_lamp_mode_all(mode)

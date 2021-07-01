@@ -1,6 +1,6 @@
 # from app import fl_app
 
-from app import control as ctrl
+from app import control1 as ctrl
 from app import jalyuzi
 
 from flask import Flask, request, render_template
@@ -10,6 +10,28 @@ app = Flask(__name__, template_folder='app/templates', static_folder='app/static
 
 lamp_controller = ctrl.LampController()
 jal_controller = jalyuzi.JalController()
+
+thread_methods = {
+    'smooth_off_all': (lamp_controller.smooth_off_all, []),
+    'gradient_projector': (lamp_controller.gradient_projector, []),
+    'gradient_demo': (lamp_controller.gradient_demo, []),
+    'pairs_on': (lamp_controller.pairs_on, ['default']),
+    'smooth_on_all': (lamp_controller.smooth_on_all, ['default']),
+    'smooth_off_all': (lamp_controller.smooth_off_all, ['default'])
+}
+
+ordinary_methods = {
+    'jal1_up': (jal_controller.move, [1, 'up']),
+    'jal1_down': (jal_controller.move, [1, 'down']),
+    'jal1_stop': (jal_controller.stop, [1]),
+    'jal1_open_up': (jal_controller.turn_up, [1, 'up']),
+    'jal1_open_down': (jal_controller.turn_up, [1, 'down']),
+    'jal2_up': (jal_controller.move, [2, 'up']),
+    'jal2_down': (jal_controller.move, [2, 'down']),
+    'jal2_stop': (jal_controller.stop, [2]),
+    'jal2_open_up': (jal_controller.turn_up, [2, 'up']),
+    'jal2_open_down': (jal_controller.turn_up, [2, 'down'])
+}
 
 @app.route('/get_modes')
 def get_modes():
@@ -35,55 +57,22 @@ def add_mode():
 @app.route('/set_mode_bot', methods=['GET', 'POST'])
 def set_mode_bot():
     args = request.json
-    print(args)
     target_mode = args['mode']
 
-    # Лампы #
-
-    if target_mode == 'smooth_off_all':
-        th = Thread(target=lamp_controller.smooth_off_all)
+    if target_mode in thread_methods.keys():
+        method = ordinary_methods[target_mode][0]
+        method_args = ordinary_methods[target_mode][1]
+        lamp_controller.stop_thread = True
+        th = Thread(target=method, args=method_args)
         th.start()
-    elif target_mode == 'gradient_projector':
-        th = Thread(target=lamp_controller.gradient_projector)
-        th.start()
-    elif target_mode == 'gradient_demo':
-        th = Thread(target=lamp_controller.gradient_demo)
-        th.start()
-    elif target_mode == 'demo':
-        th = Thread(target=lamp_controller.demo)
-        th.start()
-    elif target_mode == 'pairs_on':
-        th = Thread(target=lamp_controller.pairs_on, args=['default'])
-        th.start()
-    elif target_mode == 'smooth_on_all':
-        th = Thread(target=lamp_controller.smooth_on_all, args=['default'])
-        th.start()      
-
-    # Жалюзи #
-    elif target_mode == 'jal1_up':
-        jal_controller.move(1, 'up')
-    elif target_mode == 'jal1_down':
-        jal_controller.move(1, 'down')
-    elif target_mode == 'jal1_stop':
-        jal_controller.stop(1)
-    elif target_mode == 'jal1_open_up':
-        jal_controller.turn_up(1, 'up')
-    elif target_mode == 'jal1_open_down':
-        jal_controller.turn_up(1, 'down')
-    elif target_mode == 'jal2_up':
-        jal_controller.move(2, 'up')
-    elif target_mode == 'jal2_down':
-        jal_controller.move(2, 'down')
-    elif target_mode == 'jal2_stop':
-        jal_controller.stop(2)
-    elif target_mode == 'jal2_open_up':
-        jal_controller.turn_up(2, 'up')
-    elif target_mode == 'jal2_open_down':
-        jal_controller.turn_up(2, 'down')
+    elif target_mode in ordinary_methods.keys():
+        method = ordinary_methods[target_mode][0]
+        method_args = ordinary_methods[target_mode][1]
+        method(*method_args)
     else:
-        # lamp_controller.set_lamp_mode_all(args['mode'])
+        lamp_controller.stop_thread = True
         th = Thread(target=lamp_controller.set_lamp_mode_all_smooth, args=[target_mode])
-        th.start()    
+        th.start()
 
     print(args['mode'])
     return args['mode']

@@ -31,7 +31,7 @@
             <label>Теплый:   </label><input type="range" min="0" max="4095" id="input-warm" oninput="getWarm()"><label id="label-new-warm">X</label><br>
             <label>ШИМ:    </label>  <input type="range" min="100" max="1500" id="input-pwm" oninput="getPwm()"><label id="label-new-pwm">X</label><br>
             <button onclick="checkMode();">Проверить</button>
-            <button onclick="createMode();">Создать</button>
+            <button onclick="createMode();" disabled>Создать</button>
         </div>
         <script src="{{url_for('static', filename='js/test.js')}}"></script>
     </div>

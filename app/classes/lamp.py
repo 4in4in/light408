@@ -32,8 +32,8 @@ class Lamp:
         self.current_warm = int(params['warm'])
         if int(params['pwm_freq']) != self.current_pwm_freq:
             self.current_pwm_freq = int(params['pwm_freq'])
-            is_pwm_changed = True
+            self.is_pwm_changed = True
         else:
-            is_pwm_changed = False
+            self.is_pwm_changed = False
         self.apply_params()
 
