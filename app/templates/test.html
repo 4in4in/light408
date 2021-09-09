@@ -4,36 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>~ Light 408 ~</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/test.css')}}">
 </head>
-<body onload="init()">
-    <div class="flex-main-container">
-        <div class="flex-container">
-            <label>Список режимов:</label>
-            <br>
-            <select id="modes-element" onchange="changeMode();">
-            </select>
-            <br>
-            <button id="choose_mode" onclick="setMode();">Выбрать</button>
+<body onload="init();">
+    <div class="grid-container">
+        <div class="item header">
+            <label>Light 408</label>
         </div>
-        <div class="flex-container">
-            <label>Информация о режиме:</label>
-            <br><label>Холодный: </label><label id="label-cold">X</label><br>
-            <br><label>Теплый:   </label><label id="label-warm">X</label><br>
-            <br><label>ШИМ:    </label><label id="label-pwm">X</label><br>
-            <br>
+
+        <div class="item modes-list">
+            <label>Список режимов</label>
+            <hr class="solid">
+            <div class="flex-container">
+                <select id="modes-select" class="flex-element element"></select>
+                <button class="element">Выбрать</button>
+            </div>
+            <div class="item mode-info">
+                <label>Информация о режиме</label>
+                <hr class="solid">
+                <div class="info-container">
+                    <label class="cold-descr-label">Холодный: </label>
+                    <input type="range" min="0" max="4095" id="input-cold" class="input-cold">
+                    <label id="cold-label" class="cold-label element">0</label>
+                </div>
+                <div class="info-container">
+                    <label class="warm-descr-label">Теплый: </label>
+                    <input type="range" min="0" max="4095" id="input-warm" class="input-warm">
+                    <label id="warm-label" class="warm-label element">0</label>
+                </div>
+                <div class="info-container">
+                    <label class="pwm-descr-label">ШИМ: </label>
+                    <input type="range" min="0" max="4095" id="input-pwm" class="input-pwm">
+                    <label id="pwm-label" class="pwm-label element">0</label>
+                </div>
+                <div>
+                    <button class="element">Проверить</button>
+                    <button class="element">Сохранить</button>
+                </div>
+            </div>
         </div>
-        <div class="flex-container">
-            <label>Создать новый режим</label><br>
-            <label>Имя: </label> <input type="text" id ="input-name" value="режимчик 1"><br>
-            <label>Холодный: </label><input type="range" min="0" max="4095" id="input-cold" oninput="getCold()"><label id="label-new-cold">X</label><br>
-            <label>Теплый:   </label><input type="range" min="0" max="4095" id="input-warm" oninput="getWarm()"><label id="label-new-warm">X</label><br>
-            <label>ШИМ:    </label>  <input type="range" min="100" max="1500" id="input-pwm" oninput="getPwm()"><label id="label-new-pwm">X</label><br>
-            <button onclick="checkMode();">Проверить</button>
-            <button onclick="createMode();" disabled>Создать</button>
+        <div class="item lamp-control">
+            <label>Управление светильниками</label>
+            <hr class="solid">
         </div>
-        <script src="{{url_for('static', filename='js/test.js')}}"></script>
     </div>
+    <script src="{{url_for('static', filename='js/test.js')}}"></script>
 </body>
 </html>

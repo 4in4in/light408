@@ -1,13 +1,107 @@
-* {
-    margin: 5px;
+body {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.flex-main-container {
+input, select, textarea, button {
+    font-family:inherit;
+}
+
+hr.solid {
+    border-top: 0px solid #bebebe;
+    }
+
+.flex-container {
     display: flex;
     flex-direction: row;
 }
 
-.flex-container {
+
+.flex-element {
     flex-grow: 1;
 }
 
+.grid-container {
+    display: grid;
+    grid-template-areas:
+        'header header header header'
+        'modes-list lamp-control lamp-control lamp-control'
+    ;
+}
+
+.info-container {
+    display: grid;
+    grid-template-areas: 
+        'cold-descr-label input-cold cold-label'
+        'warm-descr-label input-warm warm-label'
+        'pwm-descr-label input-pwm pwm-label'
+    ;
+    grid-template-columns: 0.5fr 1fr 10%;
+    align-items: center;
+}
+
+
+.cold-descr-label {
+    grid-area: cold-descr-label;
+}
+
+.cold-label {
+    grid-area: cold-label;
+}
+
+.warm-descr-label {
+    grid-area: warm-descr-label;
+}
+
+.warm-label {
+    grid-area: warm-label;
+}
+
+.pwm-descr-label {
+    grid-area: pwm-descr-label;
+}
+
+.pwm-label {
+    grid-area: pwm-label;
+}
+
+.input-cold {
+    grid-area: input-cold;
+}
+
+.input-warm {
+    grid-area: input-warm;
+}
+.input-pwm {
+    grid-area: input-pwm;
+}
+
+.modes-list {
+    grid-area: modes-list;
+}
+
+.mode-info {
+    grid-area: mode-info;
+}
+
+.change-mode {
+    grid-area: change-mode;
+}
+
+.lamp-control {
+    grid-area: lamp-control;
+}
+
+.header {
+    grid-area: header;
+    text-align: center;
+}
+
+.item {
+    /* border: 1px solid #909090; */
+    /* margin: 5px; */
+    padding: 10px;
+}
+
+.element {
+    margin: 5px;
+}

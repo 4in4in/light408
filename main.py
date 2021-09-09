@@ -60,8 +60,8 @@ def set_mode_bot():
     target_mode = args['mode']
 
     if target_mode in thread_methods.keys():
-        method = ordinary_methods[target_mode][0]
-        method_args = ordinary_methods[target_mode][1]
+        method = thread_methods[target_mode][0]
+        method_args = thread_methods[target_mode][1]
         lamp_controller.stop_thread = True
         th = Thread(target=method, args=method_args)
         th.start()
